@@ -6,13 +6,31 @@ from sklearn.naive_bayes import MultinomialNB
 # Page config
 st.set_page_config(page_title="Sentiment Analysis", page_icon="😊")
 
-# 🌸 AESTHETIC CSS
+# 🌈 AESTHETIC + ANIMATED BACKGROUND
 st.markdown("""
 <style>
 
-/* Background */
+/* 🌈 Animated Gradient Background */
 .stApp {
-    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    background: linear-gradient(-45deg, #e0c3fc, #8ec5fc, #f9f9f9, #d4fc79);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+}
+
+/* Animation */
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* 🧊 Glass effect card */
+.main {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 /* Title */
@@ -33,24 +51,21 @@ p {
     font-size: 18px;
     padding: 12px;
     border-radius: 12px;
-    border: 1px solid #ddd;
 }
 
 /* Button */
 .stButton>button {
-    background: linear-gradient(to right, #89f7fe, #66a6ff);
-    color: black;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
     font-size: 18px;
     padding: 10px 25px;
     border-radius: 12px;
     border: none;
-    transition: 0.3s;
 }
 
 /* Button hover */
 .stButton>button:hover {
     transform: scale(1.05);
-    background: linear-gradient(to right, #66a6ff, #89f7fe);
 }
 
 </style>
@@ -89,12 +104,12 @@ if st.button("🔍 Analyze"):
 
         if prediction == "positive":
             st.markdown(
-                "<div style='background-color:#d4edda;padding:15px;border-radius:10px;text-align:center;'>😊 <b>Positive Sentiment</b></div>",
+                "<div style='background-color:#d4edda;padding:15px;border-radius:12px;text-align:center;font-size:18px;'>😊 <b>Positive Sentiment</b></div>",
                 unsafe_allow_html=True
             )
         else:
             st.markdown(
-                "<div style='background-color:#f8d7da;padding:15px;border-radius:10px;text-align:center;'>😡 <b>Negative Sentiment</b></div>",
+                "<div style='background-color:#f8d7da;padding:15px;border-radius:12px;text-align:center;font-size:18px;'>😡 <b>Negative Sentiment</b></div>",
                 unsafe_allow_html=True
             )
     else:
