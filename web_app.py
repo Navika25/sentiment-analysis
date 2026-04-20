@@ -14,10 +14,24 @@ data = {
     "text": [
         "I love this movie",
         "This is amazing",
+        "Very good experience",
+        "I enjoyed it",
+        "This is nice",
+        "It was a wonderful day",
+        "I feel happy",
+        
         "I hate this",
-        "This is bad"
+        "This is bad",
+        "Worst experience ever",
+        "Very boring",
+        "Not good",
+        "I feel sad",
+        "Terrible service"
     ],
-    "sentiment": ["positive", "positive", "negative", "negative"]
+    "sentiment": [
+        "positive","positive","positive","positive","positive","positive","positive",
+        "negative","negative","negative","negative","negative","negative","negative"
+    ]
 }
 
 df = pd.DataFrame(data)
