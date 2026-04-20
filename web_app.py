@@ -1,58 +1,46 @@
 import streamlit as st
 import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
-st.set_page_config(page_title="Sentiment App", page_icon="😊")
+# Page config
+st.set_page_config(page_title="Sentiment Analysis", page_icon="😊")
 
 # Title
 st.title("💬 Sentiment Analysis App 😊")
 st.write("Analyze whether your text is Positive or Negative")
 
-# Sample data
-data = {
-    "text": [
-        "I love this movie",
-        "This is amazing",
-        "Very good experience",
-        "I enjoyed it",
-        "This is nice",
-        "It was a wonderful day",
-        "I feel happy",
-        
-        "I hate this",
-        "This is bad",
-        "Worst experience ever",
-        "Very boring",
-        "Not good",
-        "I feel sad",
-        "Terrible service"
-    ],
-    "sentiment": [
-        "positive","positive","positive","positive","positive","positive","positive",
-        "negative","negative","negative","negative","negative","negative","negative"
-    ]
-}
+# ✅ Load Dataset
+@st.cache_data
+def load_data():
+    df = pd.read_csv("imbd.csv.csv")
+    return df
 
-df = pd.DataFrame(data)
+df = load_data()
 
-# Model
-vectorizer = CountVectorizer()
-X = vectorizer.fit_transform(df["text"])
+# ✅ Train Model
+@st.cache_resource
+def train_model():
+    vectorizer = TfidfVectorizer(stop_words='english')
+    X = vectorizer.fit_transform(df["review"])
+    
+    model = MultinomialNB()
+    model.fit(X, df["sentiment"])
+    
+    return vectorizer, model
 
-model = MultinomialNB()
-model.fit(X, df["sentiment"])
+vectorizer, model = train_model()
 
-# ✅ INPUT BOX (THIS WAS MISSING)
-user_input = st.text_input("✍️ Enter your review here:")
+# ✅ Input Box
+user_input = st.text_input("✍️ Enter your review:")
 
-# Button
+# ✅ Button
 if st.button("🔍 Analyze"):
     if user_input:
         user_vector = vectorizer.transform([user_input])
-        prediction = model.predict(user_vector)
+        prediction = model.predict(user_vector)[0]
 
-        if prediction[0] == "positive":
+        if prediction == "positive":
             st.success("😊 Positive Sentiment")
         else:
             st.error("😡 Negative Sentiment")
