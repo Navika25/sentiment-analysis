@@ -13,7 +13,7 @@ st.write("Analyze whether your text is Positive or Negative")
 # ✅ Load Dataset
 @st.cache_data
 def load_data():
-    df = pd.read_csv("imbd.csv.csv")
+    df = pd.read_csv("IMDB Dataset.csv")
     return df
 
 df = load_data()
