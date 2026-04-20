@@ -1,38 +1,34 @@
-from flask import Flask, render_template, request
-from src.preprocessing import load_data, clean_data
-from src.feature_engineering import vectorize_text
-from src.ml_model import train_model
-from sklearn.model_selection import train_test_split
+import streamlit as st
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
-app = Flask(__name__)
+st.title("Sentiment Analysis App 😊")
 
-# Train model once
-data = load_data()
-data = clean_data(data)
-data['sentiment'] = data['sentiment'].map({'positive': 1, 'negative': 0})
+data = {
+    "text": [
+        "I love this movie",
+        "This is amazing",
+        "I hate this",
+        "This is bad"
+    ],
+    "sentiment": ["positive", "positive", "negative", "negative"]
+}
 
-X_train, X_test, y_train, y_test = train_test_split(
-    data['review'], data['sentiment'], test_size=0.2
-)
+df = pd.DataFrame(data)
 
-vectorizer, X_train_vec = vectorize_text(X_train)
-model = train_model(X_train_vec, y_train)
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(df["text"])
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    prediction = ""
-    
-    if request.method == "POST":
-        text = request.form["text"]
-        text_vec = vectorizer.transform([text])
-        pred = model.predict(text_vec)
+model = MultinomialNB()
+model.fit(X, df["sentiment"])
 
-        if pred[0] == 1:
-            prediction = "Positive 😊"
-        else:
-            prediction = "Negative 😡"
+user_input = st.text_input("Enter your review:")
 
-    return render_template("index.html", prediction=prediction)
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+if st.button("Analyze"):
+    if user_input:
+        user_vector = vectorizer.transform([user_input])
+        prediction = model.predict(user_vector)
+        st.success(f"Prediction: {prediction[0]}")
+    else:
+        st.warning("Please enter text")
