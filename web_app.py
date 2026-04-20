@@ -4,49 +4,70 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
 # Page config
-st.set_page_config(page_title="Sentiment Analysis", page_icon="😊", layout="centered")
+st.set_page_config(page_title="Sentiment Analysis", page_icon="😊")
 
-# 🎨 CUSTOM CSS
+# 🌸 AESTHETIC CSS
 st.markdown("""
-    <style>
-    body {
-        background: linear-gradient(to right, #667eea, #764ba2);
-    }
-    .main {
-        background-color: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
-        text-align: center;
-    }
-    .stTextInput>div>div>input {
-        font-size: 18px;
-        padding: 12px;
-        border-radius: 10px;
-    }
-    .stButton>button {
-        background: linear-gradient(to right, #ff7e5f, #feb47b);
-        color: white;
-        font-size: 18px;
-        padding: 10px 25px;
-        border-radius: 10px;
-        border: none;
-    }
-    </style>
+<style>
+
+/* Background */
+.stApp {
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+}
+
+/* Title */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Subtitle */
+p {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+}
+
+/* Input box */
+.stTextInput>div>div>input {
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+}
+
+/* Button */
+.stButton>button {
+    background: linear-gradient(to right, #89f7fe, #66a6ff);
+    color: black;
+    font-size: 18px;
+    padding: 10px 25px;
+    border-radius: 12px;
+    border: none;
+    transition: 0.3s;
+}
+
+/* Button hover */
+.stButton>button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #66a6ff, #89f7fe);
+}
+
+</style>
 """, unsafe_allow_html=True)
 
 # Title
-st.markdown("<h1 style='text-align:center;'>💬 Sentiment Analysis App 😊</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;'>Analyze whether your text is Positive or Negative</p>", unsafe_allow_html=True)
+st.title("💬 Sentiment Analysis App 😊")
+st.write("Analyze whether your text is Positive or Negative")
 
-# Load dataset
+# ✅ Load dataset
 @st.cache_data
 def load_data():
     return pd.read_csv("data/imdb.csv")
 
 df = load_data()
 
-# Train model
+# ✅ Train model
 @st.cache_resource
 def train_model():
     vectorizer = TfidfVectorizer(stop_words='english')
@@ -68,12 +89,12 @@ if st.button("🔍 Analyze"):
 
         if prediction == "positive":
             st.markdown(
-                "<div style='background-color:#d4edda;padding:15px;border-radius:10px;'>😊 <b>Positive Sentiment</b></div>",
+                "<div style='background-color:#d4edda;padding:15px;border-radius:10px;text-align:center;'>😊 <b>Positive Sentiment</b></div>",
                 unsafe_allow_html=True
             )
         else:
             st.markdown(
-                "<div style='background-color:#f8d7da;padding:15px;border-radius:10px;'>😡 <b>Negative Sentiment</b></div>",
+                "<div style='background-color:#f8d7da;padding:15px;border-radius:10px;text-align:center;'>😡 <b>Negative Sentiment</b></div>",
                 unsafe_allow_html=True
             )
     else:
